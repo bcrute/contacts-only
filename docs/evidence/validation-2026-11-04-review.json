@@ -1,0 +1,222 @@
+{
+  "recorded_date": "2026-11-04",
+  "supersedes_for_current_source": "validation-2026-11-04.json (historical, earlier source)",
+  "release_state": "held for owner testing",
+  "full_checkpoint": {
+    "head": "d4ab7a70b58a7971b5e57ce14655161dd50bba99",
+    "snapshot": "c0e5353b63a6652bdc7748634212c210ef2eb849d5d29d8a08e86a7ad76dee96",
+    "exit": 0,
+    "elapsed_seconds": 304.86,
+    "job_id": "803677d34678d5939547d76fda179086",
+    "execution_member": "heavy"
+  },
+  "prerequisite_jobs": {
+    "verification_metadata": {
+      "job_id": "626a87f9dd529a371665e68d45a141d4",
+      "exit": 0,
+      "components": 328,
+      "upstream_spot_check": "junit 4.13.2, mockito-core 5.14.2, robolectric 4.16.1, AGP gradle 8.13.2 and lint 31.13.2 jars matched Maven Central / Google Maven SHA-256"
+    },
+    "fleet_image_inventory": {
+      "job_id": "a741f12695748e1033270a92a1e7ca85",
+      "exit": 0,
+      "system_images": [
+        "system-images;android-36;aosp_atd;x86_64"
+      ]
+    }
+  },
+  "jvm": {
+    "scenarios": 16,
+    "sdk_levels": [
+      35,
+      36
+    ],
+    "executions": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "buttonsExplainInsteadOfCrashingWhenNoAppCanOpenTheScreen",
+      "buttonsExplainInsteadOfCrashingWhenNoAppCanOpenTheScreen[35]",
+      "cancellingRoleRequestKeepsBlockingOff",
+      "cancellingRoleRequestKeepsBlockingOff[35]",
+      "grantingRoleElsewhereDoesNotUndoAPausedChoice",
+      "grantingRoleElsewhereDoesNotUndoAPausedChoice[35]",
+      "missingRoleShowsOffAndGrantEnablesBlocking",
+      "missingRoleShowsOffAndGrantEnablesBlocking[35]",
+      "openingWithoutTheRoleNeverSilentlyRequestsAccess",
+      "openingWithoutTheRoleNeverSilentlyRequestsAccess[35]",
+      "outgoingAndUnknownDirectionAreNeverRejected",
+      "outgoingAndUnknownDirectionAreNeverRejected[35]",
+      "pausedChoiceSurvivesActivityAndServiceRecreation",
+      "pausedChoiceSurvivesActivityAndServiceRecreation[35]",
+      "phoneAppButtonOpensTheDialer",
+      "phoneAppButtonOpensTheDialer[35]",
+      "returningFromSettingsReflectsRoleRevocation",
+      "returningFromSettingsReflectsRoleRevocation[35]",
+      "roleRequestThatCannotOpenExplainsAndStaysOff",
+      "roleRequestThatCannotOpenExplainsAndStaysOff[35]",
+      "rotationKeepsPausedChoiceAndDoesNotRequestTheRoleAgain",
+      "rotationKeepsPausedChoiceAndDoesNotRequestTheRoleAgain[35]",
+      "statusDetailDistinguishesOnPausedAndNotSetUp",
+      "statusDetailDistinguishesOnPausedAndNotSetUp[35]",
+      "switchingOffAndOnChangesTheNextCallInTheSameService",
+      "switchingOffAndOnChangesTheNextCallInTheSameService[35]",
+      "unrelatedActivityResultDoesNotResumeBlocking",
+      "unrelatedActivityResultDoesNotResumeBlocking[35]",
+      "unsupportedDeviceShowsOffAndDisablesTheSwitch",
+      "unsupportedDeviceShowsOffAndDisablesTheSwitch[35]",
+      "upgradeKeepsBlockingAndPreservesBlockedHistory",
+      "upgradeKeepsBlockingAndPreservesBlockedHistory[35]"
+    ]
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": [
+      "OldTargetApi (target SDK 36 kept deliberately)"
+    ]
+  },
+  "dependency_verification": "gradle/verification-metadata.xml enforced by the build (sha256)",
+  "release_audit": {
+    "state": "passed",
+    "sha256": "5e9ee7cebbae6462088877d354f09d525810f442dd7362b982e9678bb5062464",
+    "permissions": [],
+    "debuggable": false,
+    "activities": 1,
+    "services": 1,
+    "test_fixture_absent": true,
+    "min_sdk": 29,
+    "target_sdk": 36
+  },
+  "artifacts_sha256": {
+    "apk/debug/app-debug.apk": "bf784ae81588519791381076526463abf1965796bb3dc3e84bfc15e398c5b6a6",
+    "apk/release/app-release-unsigned.apk": "5e9ee7cebbae6462088877d354f09d525810f442dd7362b982e9678bb5062464",
+    "apk/androidTest/debug/app-debug-androidTest.apk": "9dcc2d3462223916991d1d0082d4cbb92e7d5eb250e05e11e26dde476f3ffad4"
+  },
+  "reuse_binding": {
+    "written_by_build": true,
+    "build_head": "d4ab7a70b58a7971b5e57ce14655161dd50bba99",
+    "compiled_inputs": 30,
+    "jvm_tests": 32
+  },
+  "native": {
+    "36": {
+      "state": "passed",
+      "fingerprint": "Android/sdk_slim_x86_64/emu64x:16/BE2A.250530.027/13847098:userdebug/test-keys",
+      "phases": [
+        "upgrade-on",
+        "set-off",
+        "verify-off",
+        "verify-off",
+        "verify-off",
+        "set-on",
+        "role-revoked",
+        "verify-on",
+        "large-text-on"
+      ],
+      "upgrade": {
+        "from_version": 1,
+        "to_version": 2,
+        "first_install_preserved": true
+      },
+      "fixture_cold_start": true,
+      "calls": [
+        {
+          "case": "saved contact rings",
+          "expected_blocked": false,
+          "state": 2,
+          "rang": true,
+          "log_type": null,
+          "block_reason": null
+        },
+        {
+          "case": "contact saved as national number, presented international",
+          "expected_blocked": false,
+          "state": 2,
+          "rang": true,
+          "log_type": null,
+          "block_reason": null
+        },
+        {
+          "case": "contact saved as international number, presented national",
+          "expected_blocked": false,
+          "state": 2,
+          "rang": true,
+          "log_type": null,
+          "block_reason": null
+        },
+        {
+          "case": "unsaved caller rejected",
+          "expected_blocked": true,
+          "state": -1,
+          "rang": false,
+          "log_type": 6,
+          "block_reason": 1
+        },
+        {
+          "case": "unsaved caller rings while paused",
+          "expected_blocked": false,
+          "state": 2,
+          "rang": true,
+          "log_type": null,
+          "block_reason": null
+        },
+        {
+          "case": "unsaved caller rejected after resuming",
+          "expected_blocked": true,
+          "state": -1,
+          "rang": false,
+          "log_type": 6,
+          "block_reason": 1
+        },
+        {
+          "case": "unsaved caller rings after role revocation",
+          "expected_blocked": false,
+          "state": 2,
+          "rang": true,
+          "log_type": null,
+          "block_reason": null
+        }
+      ],
+      "large_text": {
+        "font_scale": 2.0,
+        "display_pixels": "720x1280",
+        "switch_semantics_and_label": "passed"
+      },
+      "work_profile_contact_observation": {
+        "state": "observed",
+        "rang": true,
+        "rejected": false
+      }
+    },
+    "35": {
+      "state": "pending",
+      "reason": "system image is not installed on this fleet guest; nothing was run"
+    }
+  },
+  "not_established": [
+    "native Android 15 (no fleet image)",
+    "physical Samsung behaviour",
+    "Samsung Secure Folder contacts",
+    "rendered pixels and TalkBack",
+    "carrier/OEM behaviour and voicemail routing",
+    "code coverage percentage"
+  ],
+  "reuse_checkpoint": {
+    "head": "671f6c3d90c2557f81d7e15daa9491b8e93a05e9",
+    "snapshot": "e1dc0a28fb5b295894f519b65f315e2cab33a70c2d5a2c2ee0a543313d879b41",
+    "exit": 0,
+    "elapsed_seconds": 157.46,
+    "job_id": "3a8ab146f292994c913f1b57019d47ae",
+    "execution_member": "core",
+    "reused_build_job": "803677d34678d5939547d76fda179086",
+    "reused_build_head": "d4ab7a70b58a7971b5e57ce14655161dd50bba99",
+    "orchestration_tests": {
+      "ran": 15,
+      "result": "OK"
+    },
+    "native_36": "passed; 9 phases and 7 call cases identical to the full checkpoint; work-profile contact rang",
+    "native_35": "pending; image not installed",
+    "release_audit_sha256": "5e9ee7cebbae6462088877d354f09d525810f442dd7362b982e9678bb5062464"
+  }
+}

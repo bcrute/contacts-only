@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="call_blocking_switch" type="id" />
+    <item name="open_phone_button" type="id" />
+    <item name="open_app_settings_button" type="id" />
+</resources>

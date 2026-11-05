@@ -1,0 +1,159 @@
+{
+  "recorded_date": "2026-11-04",
+  "release_state": "held for owner testing",
+  "full_checkpoint": {
+    "head": "a7ff154c3569dac11d5bf9fc8980ad1084917443",
+    "snapshot": "ea730d623429afcb1c94d9558d9a2091a3cb715c95575d9a6292814ffbe50701",
+    "exit": 0,
+    "elapsed_seconds": 226.42,
+    "job_id": "972645b1435bec2dc674100ba0147f80",
+    "execution_member": "core"
+  },
+  "reuse_boundary_checkpoint": {
+    "head": "233b125e6981ed9fcd265a1fdc682d2374b7a67c",
+    "snapshot": "69399c4bbb12ee2f586776bdc767802dadd05f40c45fe634809ec4e1ad71a05a",
+    "exit": 0,
+    "elapsed_seconds": 9.74,
+    "job_id": "b7ea5a909330dda35dc12014ff84cf94",
+    "execution_member": "core"
+  },
+  "jvm": {
+    "scenarios": 12,
+    "sdk_levels": [
+      29,
+      33,
+      36
+    ],
+    "executions": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "rotationKeepsPausedChoiceAndDoesNotRequestTheRoleAgain[29]",
+      "switchingOffAndOnChangesTheNextCallInTheSameService[29]",
+      "missingRoleShowsOffAndGrantEnablesBlocking[29]",
+      "grantingRoleElsewhereDoesNotUndoAPausedChoice[29]",
+      "cancellingRoleRequestKeepsBlockingOff[29]",
+      "outgoingAndUnknownDirectionAreNeverRejected[29]",
+      "unrelatedActivityResultDoesNotResumeBlocking[29]",
+      "unsupportedDeviceShowsOffAndDisablesTheSwitch[29]",
+      "pausedChoiceSurvivesActivityAndServiceRecreation[29]",
+      "openingWithoutTheRoleNeverSilentlyRequestsAccess[29]",
+      "returningFromSettingsReflectsRoleRevocation[29]",
+      "upgradeKeepsBlockingAndPreservesBlockedHistory[29]",
+      "rotationKeepsPausedChoiceAndDoesNotRequestTheRoleAgain[33]",
+      "switchingOffAndOnChangesTheNextCallInTheSameService[33]",
+      "missingRoleShowsOffAndGrantEnablesBlocking[33]",
+      "grantingRoleElsewhereDoesNotUndoAPausedChoice[33]",
+      "cancellingRoleRequestKeepsBlockingOff[33]",
+      "outgoingAndUnknownDirectionAreNeverRejected[33]",
+      "unrelatedActivityResultDoesNotResumeBlocking[33]",
+      "unsupportedDeviceShowsOffAndDisablesTheSwitch[33]",
+      "pausedChoiceSurvivesActivityAndServiceRecreation[33]",
+      "openingWithoutTheRoleNeverSilentlyRequestsAccess[33]",
+      "returningFromSettingsReflectsRoleRevocation[33]",
+      "upgradeKeepsBlockingAndPreservesBlockedHistory[33]",
+      "rotationKeepsPausedChoiceAndDoesNotRequestTheRoleAgain",
+      "switchingOffAndOnChangesTheNextCallInTheSameService",
+      "missingRoleShowsOffAndGrantEnablesBlocking",
+      "grantingRoleElsewhereDoesNotUndoAPausedChoice",
+      "cancellingRoleRequestKeepsBlockingOff",
+      "outgoingAndUnknownDirectionAreNeverRejected",
+      "unrelatedActivityResultDoesNotResumeBlocking",
+      "unsupportedDeviceShowsOffAndDisablesTheSwitch",
+      "pausedChoiceSurvivesActivityAndServiceRecreation",
+      "openingWithoutTheRoleNeverSilentlyRequestsAccess",
+      "returningFromSettingsReflectsRoleRevocation",
+      "upgradeKeepsBlockingAndPreservesBlockedHistory"
+    ]
+  },
+  "reuse_boundary_tests": 6,
+  "artifact_audit": {
+    "state": "passed",
+    "sha256": "cbf8471d91813442d8907b9182e07750f7a9bad7fd0bf04d39425d40b476d369",
+    "permissions": [],
+    "debuggable": false,
+    "activities": 1,
+    "services": 1,
+    "test_fixture_absent": true,
+    "min_sdk": 29,
+    "target_sdk": 36
+  },
+  "native": {
+    "state": "passed",
+    "fingerprint": "Android/sdk_slim_x86_64/emu64x:16/BE2A.250530.027/13847098:userdebug/test-keys",
+    "app_sha256": "d0efe24321ef96463647eb78dd10d5ffb653ae283a478dc1ede57e21968662ee",
+    "fixture_sha256": "140253fe965cfa2b77cf040322590cd124b559ffa17e282c0f60f6bcbd5fd7de",
+    "phases": [
+      "upgrade-on",
+      "set-off",
+      "verify-off",
+      "verify-off",
+      "verify-off",
+      "set-on",
+      "role-revoked",
+      "verify-on",
+      "large-text-on"
+    ],
+    "upgrade": {
+      "from_version": 1,
+      "to_version": 2,
+      "first_install_preserved": true
+    },
+    "calls": [
+      {
+        "number": "+12025550101",
+        "expected_blocked": false,
+        "observed": {
+          "state": 2
+        },
+        "observation_seconds": 6.92365484405309
+      },
+      {
+        "number": "+12025550102",
+        "expected_blocked": true,
+        "observed": {
+          "state": -1,
+          "log_type": 6,
+          "block_reason": 1
+        },
+        "observation_seconds": 2.371387584018521
+      },
+      {
+        "number": "+12025550103",
+        "expected_blocked": false,
+        "observed": {
+          "state": 2
+        },
+        "observation_seconds": 6.941529555944726
+      },
+      {
+        "number": "+12025550104",
+        "expected_blocked": true,
+        "observed": {
+          "state": -1,
+          "log_type": 6,
+          "block_reason": 1
+        },
+        "observation_seconds": 2.4863647709134966
+      }
+    ],
+    "fixture_cold_start": true,
+    "large_text": {
+      "font_scale": 2.0,
+      "display_pixels": "720x1280",
+      "switch_semantics_and_label": "passed"
+    }
+  },
+  "visual_evidence": {
+    "accepted": false,
+    "reason": "ATD capture frames were uniformly black; rendering qualification and TalkBack review remain pending."
+  },
+  "remaining_limits": [
+    "One native Android 36 image; Android 29/33 regression coverage is simulated.",
+    "No new physical carrier/OEM call or visual/TalkBack acceptance recorded.",
+    "No measured coverage percentage or mutation score.",
+    "Automatic PR triggers are not deployed."
+  ],
+  "timing_note": "Call observation durations include polling/history lookup and are not callback latency measurements."
+}
