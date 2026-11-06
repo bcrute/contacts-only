@@ -12,9 +12,9 @@ SHA-256:
 
 The integration job checks this identity, re-signs a copy with its disposable
 debug key, and verifies every non-META-INF ZIP entry remains identical. It can
-then install 1.0 and update to the candidate without a production key in the
-job. The real Samsung update using the original certificate was separately
-verified during development. The emulator does not establish carrier/OEM parity.
+then install 1.0 (application ID `com.ben.contactsonly`) beside the candidate
+(`com.contactsonly.app`) and check that the call-screening role moves to the
+candidate, without a production key in the job. The emulator does not establish carrier/OEM parity.
 
 This fixture contains app code/resources and a public signing certificate. It
 contains no contacts, call history, settings, account data or private signing key.

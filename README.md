@@ -21,8 +21,12 @@ you temporarily accept unsaved callers without uninstalling the app.
 
 Turn the switch off whenever you want unsaved callers to reach you. You can
 leave the app installed and selected for call screening. The choice survives
-closing the app and restarting your phone. Upgrading from 1.0 preserves the
-existing blocking behavior.
+closing the app and restarting your phone.
+
+Coming from 1.0 or 1.1.0? Version 1.2.0 has a new application ID, so it
+installs alongside the old app rather than over it. Install it, turn blocking on
+and approve it as the caller ID and spam app (Android then stops using the old
+app), and uninstall the old Contacts Only.
 
 While blocking is on, saved contacts ring normally, unsaved visible numbers are
 rejected, and blocked calls stay in the system call history. Android handles the
@@ -55,10 +59,11 @@ maintainer submits `sh ci/validate.sh` through the installed standalone
 `ci-fleet.py` helper with private fleet configuration and project `contacts-only`.
 Unavailable capacity or connectivity leaves validation pending.
 
-The check builds the product and independent fixture APKs, runs lint and sixteen
-regression scenarios on two simulated Android versions (API 35 and 36), and
-audits the actual release manifest/DEX. Native Android integration exercises the
-installed app, real roles and touch input, upgrade, process/reboot persistence,
+The check builds the product and independent fixture APKs and the Google Play
+app bundle, runs lint and sixteen regression scenarios on two simulated Android
+versions (API 35 and 36), and audits the actual release manifest/DEX, including
+the APK Play would generate from the bundle. Native Android integration exercises the
+installed app, real roles and touch input, the role moving from 1.0, process/reboot persistence,
 accessibility semantics, large text and synthetic incoming calls through Telecom,
 including contacts saved in a different number format from the caller's.
 It runs on Android 16 (API 36) and, when the fleet guest has the image, on

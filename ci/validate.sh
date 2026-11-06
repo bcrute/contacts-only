@@ -39,7 +39,10 @@ if url:
     p.write_text('\n'.join(lines) + '\n')
 PY
 
-ci_tasks=":app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest :app:lint :app:testDebugUnitTest"
+# bundleRelease is the unsigned Google Play app bundle; packageReleaseUniversalApk
+# expands it the way Play would, so ci/audit_apk.py can audit what Play serves.
+ci_tasks=":app:assembleDebug :app:assembleRelease :app:bundleRelease :app:packageReleaseUniversalApk \
+:app:assembleDebugAndroidTest :app:lint :app:testDebugUnitTest"
 
 # Regenerate gradle/verification-metadata.xml after a dependency change.
 # The job runs the complete task set so every resolved artifact is recorded,
@@ -60,7 +63,8 @@ ci_status=0
 sh "$ci_wrapper_dir/gradlew" -p "$ci_source_dir" --no-daemon --console=plain $ci_tasks \
     > "$ci_output_dir/gradle.log" 2>&1 || ci_status=$?
 cat "$ci_output_dir/gradle.log"
-for ci_result in app/build/reports app/build/test-results app/build/outputs/apk; do
+for ci_result in app/build/reports app/build/test-results app/build/outputs/apk \
+    app/build/outputs/bundle app/build/outputs/apk_from_bundle; do
     if [ -d "$ci_result" ]; then
         cp -R "$ci_result" "$ci_output_dir/"
     fi
@@ -70,6 +74,8 @@ if [ "$ci_status" -ne 0 ]; then
 fi
 (cd "$ci_output_dir" && sha256sum apk/debug/app-debug.apk \
     apk/release/app-release-unsigned.apk \
+    bundle/release/app-release.aab \
+    apk_from_bundle/release/app-release-universal-unsigned.apk \
     apk/androidTest/debug/app-debug-androidTest.apk > SHA256SUMS)
 # Bind the passing build's outputs to its exact compiled inputs so a later job
 # can reuse them only while every input is unchanged (ci/reuse_validation.py).

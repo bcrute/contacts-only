@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <application>
         <provider android:name="com.ben.contactsonly.IntegrationFixtureProvider"
-            android:authorities="com.ben.contactsonly.test.fixture"
+            android:authorities="${applicationId}.fixture"
             android:exported="true" android:permission="android.permission.DUMP"
             android:process=":fixture" />
         <activity android:name="com.ben.contactsonly.IntegrationDialerActivity"

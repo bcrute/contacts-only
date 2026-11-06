@@ -7,7 +7,9 @@ Installed November 4, 2026: the released 1.1.0 APK (code 2), SHA-256
 the release key and rotation lineage. Observed: updated the earlier debug-signed
 1.1.0 test build in place; Android lists the debug certificate as a past signer;
 first-install time unchanged since 1.0; call-screening role retained. The owner
-chose to publish before the toggle checks below.
+chose to publish before the toggle checks below. That install uses the old
+application ID, `com.ben.contactsonly`; 1.2.0 (`com.contactsonly.app`) will
+install alongside it, and the call-screening role moves when approved.
 
 The following are **pending** for the new toggle. Record the date, OS/build,
 candidate APK hash and observed result. Do not mark them passed from emulator
@@ -16,7 +18,7 @@ not placed any real calls or sent messages.
 
 | Check | Expected observation | Observed result |
 | --- | --- | --- |
-| Upgrade default | Blocking remains on after the update | Pending visual/call confirmation |
+| New ID install | 1.2.0 installs alongside the old app; approving it moves the call-screening role; blocking is on | Pending |
 | On: saved contact calls | Phone rings normally | Pending |
 | On: unsaved caller calls | Rejected; visible in system blocked history | Pending |
 | Off: same unsaved caller | Rings, subject to other phone/carrier settings | Pending |

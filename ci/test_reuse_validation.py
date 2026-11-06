@@ -9,7 +9,7 @@ import tempfile
 import unittest
 
 from checks import CheckFailed
-from reuse_validation import APKS, BINDING, INPUTS, JUNIT_PREFIX, JUNIT_SOURCE, digest, verify, write_binding
+from reuse_validation import OUTPUTS, BINDING, INPUTS, JUNIT_PREFIX, JUNIT_SOURCE, digest, verify, write_binding
 
 CI = Path(__file__).resolve().parent
 PASSING = '<testsuite name="CallBlockingTest" tests="24" failures="0" errors="0" skipped="0"/>'
@@ -30,7 +30,7 @@ class ReuseBoundaryTest(unittest.TestCase):
         self.source = Path('app/src/main/java/Example.java')
         self.source.parent.mkdir(parents=True)
         self.source.write_text('class Example {}\n')
-        for target in APKS.values():
+        for target in OUTPUTS.values():
             Path(target).parent.mkdir(parents=True, exist_ok=True)
             Path(target).write_bytes(b'identity-check fixture, not an executable APK: ' + target.encode())
         JUNIT_SOURCE.mkdir(parents=True)
@@ -39,7 +39,7 @@ class ReuseBoundaryTest(unittest.TestCase):
         self.root = Path('.validation-inputs')
         self.binding_path = self.root / BINDING
         write_binding(self.binding_path)
-        for key, source in APKS.items():
+        for key, source in OUTPUTS.items():
             self.copy(source, key)
         self.copy(JUNIT_SOURCE / 'TEST-CallBlockingTest.xml', JUNIT_PREFIX + 'TEST-CallBlockingTest.xml')
         (self.root / 'receipt.json').write_text('{"exit": 0}\n')
@@ -105,7 +105,7 @@ class ReuseBoundaryTest(unittest.TestCase):
     def test_binding_that_omits_an_apk_is_rejected(self):
         key = 'contacts-only/apk/androidTest/debug/app-debug-androidTest.apk'
         self.rebind(lambda binding: binding['artifacts'].pop(key))
-        self.rejects('exactly the three APKs')
+        self.rejects('exactly the build outputs')
 
     def test_binding_that_omits_junit_is_rejected(self):
         def drop(binding):

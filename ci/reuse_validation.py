@@ -7,11 +7,11 @@ complete fleet download (``ci-fleet.py --download-artifacts``) unchanged as
 ``.validation-inputs/`` and run this script without arguments. It checks:
 
 * every downloaded file against the fleet's readback manifest, with no extras;
-* that the binding names exactly the three APKs and the build's JUnit reports;
+* that the binding names exactly the build outputs (APKs, app bundle) and JUnit reports;
 * every bound artifact's SHA-256, and passing JUnit totals equal to the binding's;
 * the complete compiled-input inventory and every input's SHA-256.
 
-Only then are the APKs restored and the orchestration tests and native checks run.
+Only then are the outputs restored and the orchestration tests and native checks run.
 """
 import argparse
 import hashlib
@@ -26,17 +26,20 @@ from checks import require
 
 INPUTS = ['app/src', 'app/build.gradle.kts', 'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties',
           'gradle', 'gradlew', 'gradlew.bat', 'test-fixtures']
-APKS = {
+OUTPUTS = {
     'contacts-only/apk/debug/app-debug.apk': 'app/build/outputs/apk/debug/app-debug.apk',
     'contacts-only/apk/release/app-release-unsigned.apk':
         'app/build/outputs/apk/release/app-release-unsigned.apk',
     'contacts-only/apk/androidTest/debug/app-debug-androidTest.apk':
         'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
+    'contacts-only/bundle/release/app-release.aab': 'app/build/outputs/bundle/release/app-release.aab',
+    'contacts-only/apk_from_bundle/release/app-release-universal-unsigned.apk':
+        'app/build/outputs/apk_from_bundle/release/app-release-universal-unsigned.apk',
 }
 JUNIT_SOURCE = Path('app/build/test-results/testDebugUnitTest')
 JUNIT_PREFIX = 'contacts-only/test-results/testDebugUnitTest/'
 BINDING = 'artifacts/reuse/binding.json'
-FORMAT = 2
+FORMAT = 3
 
 
 def source_files():
@@ -87,7 +90,7 @@ def write_binding(target):
     """Run by the passing build job, before anything else touches its outputs."""
     reports = sorted(JUNIT_SOURCE.glob('TEST-*.xml'))
     require(reports, 'No JUnit reports to bind')
-    artifacts = {key: digest(source) for key, source in APKS.items()}
+    artifacts = {key: digest(source) for key, source in OUTPUTS.items()}
     artifacts.update({JUNIT_PREFIX + p.name: digest(p) for p in reports})
     binding = {'format': FORMAT, 'produced_by': 'ci/validate.sh', 'build_head': build_head(),
                'compiled_inputs': {p: digest(p) for p in source_files()},
@@ -127,8 +130,8 @@ def verify(root):
     junit = binding['junit']['files']
     require(junit and all(name.startswith(JUNIT_PREFIX) and name.endswith('.xml') for name in junit),
             'Binding names no valid JUnit reports')
-    require(set(artifacts) == set(APKS) | set(junit),
-            'Binding must name exactly the three APKs and the JUnit reports')
+    require(set(artifacts) == set(OUTPUTS) | set(junit),
+            'Binding must name exactly the build outputs and the JUnit reports')
     for path, wanted in artifacts.items():
         require(digest(root / 'artifacts' / safe_relative(path)) == wanted, 'Artifact changed: ' + path)
     tests = junit_totals([root / 'artifacts' / name for name in junit])
@@ -148,7 +151,7 @@ def main():
         return
     root = Path('.validation-inputs')
     manifest, binding = verify(root)
-    for key, target in APKS.items():
+    for key, target in OUTPUTS.items():
         destination = Path(target)
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(root / 'artifacts' / key, destination)

@@ -12,8 +12,13 @@ import zipfile
 
 from checks import CheckFailed, require
 
-PACKAGE = 'com.ben.contactsonly'
+PACKAGE = 'com.contactsonly.app'
+# Java classes keep the original namespace; only the application ID changed.
+NAMESPACE = 'com.ben.contactsonly'
 FIXTURE = PACKAGE + '.test'
+# 1.0 used the original application ID. The new ID is a separate app, so the
+# job checks that the call-screening role moves from 1.0 to the candidate.
+ORIGINAL_PACKAGE = 'com.ben.contactsonly'
 ORIGINAL_SHA256 = '6bd9fed2ffa9b5e89e29659726062f288fbbb0477b41365c32208d41b14e751e'
 # Android 15 is the oldest supported version; see the README.
 SUPPORTED_APIS = (35, 36)
@@ -72,7 +77,7 @@ def exercise(adb, output, record):
                 f'{package} does not hold {name}')
     def phase(name):
         text = adb('shell', 'am', 'instrument', '-w', '-r', '-e', 'phase', name,
-                   FIXTURE + '/com.ben.contactsonly.AndroidIntegration', timeout=90)
+                   FIXTURE + '/' + NAMESPACE + '.AndroidIntegration', timeout=90)
         (output / f'{len(record["phases"]):02}-{name}.txt').write_text(text)
         screenshot = subprocess.run(['adb', '-s', 'emulator-5554', 'exec-out', 'run-as',
             PACKAGE, 'cat', 'files/integration-screen.png'], capture_output=True, timeout=20)
@@ -136,7 +141,7 @@ def exercise(adb, output, record):
             user = re.search(r'created user id (\d+)', created, re.I).group(1)
             adb('shell', 'pm', 'install-existing', '--user', user, FIXTURE)
             adb('shell', 'dpm', 'set-profile-owner', '--user', user,
-                FIXTURE + '/com.ben.contactsonly.IntegrationAdminReceiver')
+                FIXTURE + '/' + NAMESPACE + '.IntegrationAdminReceiver')
             adb('shell', 'am', 'start-user', '-w', user, timeout=120)
             for permission in ('READ_CONTACTS', 'WRITE_CONTACTS'):
                 adb('shell', 'pm', 'grant', '--user', user, FIXTURE, 'android.permission.' + permission)
@@ -152,16 +157,20 @@ def exercise(adb, output, record):
     adb('shell', 'input', 'keyevent', '82')
     adb('shell', 'wm', 'dismiss-keyguard')
     adb('install', '-r', str(baseline))
-    role('android.app.role.CALL_SCREENING', PACKAGE)
-    adb('shell', 'am', 'start', '-n', PACKAGE + '/.MainActivity')
-    before = adb('shell', 'dumpsys', 'package', PACKAGE)
-    first_install = re.search(r'firstInstallTime=(.+)', before).group(1)
-    require('versionCode=1 ' in before, 'Baseline is not version 1')
+    role('android.app.role.CALL_SCREENING', ORIGINAL_PACKAGE)
+    require('versionCode=1 ' in adb('shell', 'dumpsys', 'package', ORIGINAL_PACKAGE),
+            'Baseline is not version 1')
     adb('install', '-r', str(candidate))
-    after = adb('shell', 'dumpsys', 'package', PACKAGE)
-    require('versionCode=2 ' in after and ('firstInstallTime=' + first_install) in after,
-            'Candidate did not update the baseline in place')
-    record['upgrade'] = {'from_version': 1, 'to_version': 2, 'first_install_preserved': True}
+    require('versionCode=3 ' in adb('shell', 'dumpsys', 'package', PACKAGE), 'Candidate is not version 3')
+    role('android.app.role.CALL_SCREENING', PACKAGE)
+    holders = adb('shell', 'cmd', 'role', 'get-role-holders', 'android.app.role.CALL_SCREENING').split()
+    require(holders == [PACKAGE], 'Call-screening role did not move from 1.0: ' + repr(holders))
+    adb('shell', 'am', 'start', '-n', PACKAGE + '/' + NAMESPACE + '.MainActivity')
+    # 1.0 stays installed without the role for the remaining phases, so a caller
+    # that rings proves the old app is no longer screening.
+    record['migration'] = {'from_package': ORIGINAL_PACKAGE, 'from_version': 1,
+                           'to_package': PACKAGE, 'to_version': 3, 'role_moved': True,
+                           'from_still_installed': True}
     adb('install', '-t', '-r', '-g', str(fixture_apk))
     for permission in ('READ_CONTACTS', 'WRITE_CONTACTS', 'READ_CALL_LOG'):
         adb('shell', 'pm', 'grant', FIXTURE, 'android.permission.' + permission)
@@ -172,7 +181,7 @@ def exercise(adb, output, record):
     # Contacts saved in a different format from the number the network presents.
     for saved in ('202-555-0106', '+12025550107'):
         require(fixture('seed-contact', saved)['seeded'] == saved, 'Contact not seeded: ' + saved)
-    phase('upgrade-on')
+    phase('install-on')
     call('+12025550101', False, 'saved contact rings')  # Android bypasses screening for contacts.
     call('+12025550106', False, 'contact saved as national number, presented international')
     call('2025550107', False, 'contact saved as international number, presented national')

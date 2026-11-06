@@ -13,6 +13,27 @@ application, fixtures or compiled inputs. Reuse job
 157.46 seconds) verified that build's retained download, ran the orchestration
 tests and repeated the native Android 16 checks with identical results.
 
+1.2.0 checkpoint (application ID `com.contactsonly.app`): job
+`35d0f8952a4a3bc1b2609e5fb8c1d861` (source `ad40cd8`, Heavy, exit 0 in 269.47
+seconds). Dependency verification, 32 JVM executions, lint, 15 orchestration
+tests and the release audit of the APK and the bundle's universal APK passed
+(version 1.2.0, code 3, no permissions). Native Android 16 passed all nine
+phases from a fresh install-on phase and seven Telecom cases; before them, 1.0
+(`com.ben.contactsonly`) was installed with the call-screening role, the
+candidate was installed beside it, and the role moved to the candidate. 1.0
+stayed installed, and unsaved callers still rang while paused and after
+revocation. Android 15 pending (no image). Release APK SHA-256
+`f8325ff2800defa950c892f58935c5cde0e30d91c310929955bf0889eee3e2c0`; bundle
+`8760b4f6eb9ce62caccc228f0f5ae00927dd3ea0d157cc555c957699bdd97445`.
+
+App bundle checkpoint: job `82b4a40c9ebb6ab66f306df5418ac6e5` (source `7d0d4b1`,
+Heavy, exit 0 in 269.9 seconds) ran the full check with the Google Play bundle
+added. Dependency verification passed with no new entries; 32 JVM executions,
+15 orchestration tests and the native Android 16 phases passed (Android 15
+pending, no image). The release audit passed for both the release APK and the
+universal APK generated from the bundle (version 1.1.0, code 2, no permissions).
+Bundle SHA-256 `55523f283e77d22e5646de54f38ddc4d9e133c84a823801cdd98452277cd174b`.
+
 [Sanitized machine-readable evidence](evidence/validation-2026-11-04-review.json)
 is derived from that job's retained JUnit XML, APK audit, reuse binding and
 native result records. It contains source/artifact identities, cases and
@@ -83,7 +104,7 @@ and run the app, but they get no tests or fixes. JVM checks simulate API 35 and
 | --- | --- | --- |
 | JVM regression | Sixteen scenarios on APIs 35 and 36: toggle/callback flags, default-on migration, recreation, role grant/refusal/revocation, paused-state retention, status text, and buttons or role requests that no app can open | Simulated roles and call details; not a telecom integration test |
 | Release APK audit | Actual manifest, requested permissions, export surface, backup policy, debuggable flag, and absence of fixture/test libraries in DEX | Static artifact inspection; not a penetration test |
-| Native Android | Installed app, real touch input and role system, permission-picker cancellation, saved state after force-stop/reboot/reinstall, 1.0-to-candidate in-place upgrade, primary switch accessibility and large text | Disposable emulator images; no physical-device claim |
+| Native Android | Installed app, real touch input and role system, permission-picker cancellation, saved state after force-stop/reboot/reinstall, call-screening role moving from 1.0 to the new application ID, primary switch accessibility and large text | Disposable emulator images; no physical-device claim |
 | Synthetic modem/Telecom | Saved and differently formatted contacts ring; unknown caller rejected and never rings when on; rings when paused or when the role is revoked; rejection resumes when on | Emulator calls and a test dialer; not a real carrier network |
 | Work-profile observation | Whether Android treats a work-profile-only contact as a contact | Recorded, not gated: it is platform behaviour the app cannot change |
 | Physical acceptance | Samsung call behavior, Secure Folder contacts, OEM controls and human accessibility experience | Pending the owner's observations; never inferred from a suite pass |
@@ -117,8 +138,8 @@ project `contacts-only`, and command `sh ci/validate.sh`. Set:
 The guest needs JDK 21, Android platform 36/build-tools 36.0.0, KVM, and the
 registered `system-images;android-36;aosp_atd;x86_64` image. Registering
 `system-images;android-35;aosp_atd;x86_64` on the guest enables the Android 15
-run without any repository change. The script builds all APKs, verifies
-dependencies, runs regression/lint, audits the release artifact and runs Android
+run without any repository change. The script builds all APKs and the app
+bundle, verifies dependencies, runs regression/lint, audits the release artifact and runs Android
 integration in the same bounded guest. Never run on the PC.
 
 After a dependency change, the build fails verification until the metadata is

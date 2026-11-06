@@ -25,17 +25,19 @@ UI state. SharedPreferences supplies immediate in-process visibility and saved
 state across future launches. The UI displays the combination of the saved
 choice and the actual Android role, so losing the role cannot appear active.
 
-## Upgrade and permissions
+## Installation and permissions
 
-Version 1.0 always rejected screened incoming calls. The new preference defaults
-to on, preserving that behavior for existing users. New installations still
-need the owner's Android role approval. Turning the switch off retains the role
-and allows callbacks; re-enabling can therefore work without another prompt.
+Version 1.0 always rejected screened incoming calls. The preference defaults to
+on, matching that behavior. Installations need the owner's Android role
+approval. Turning the switch off retains the role and allows callbacks;
+re-enabling can therefore work without another prompt.
 
-Updates preserve package identity and signing certificate. Private keys stay
-outside Git and fleet source snapshots. Installed copies were signed with the
-Android SDK debug key; releases are signed with a dedicated release key through
-an APK Signature Scheme v3 rotation lineage from it ([RELEASING.md](RELEASING.md)).
+Version 1.2.0 changed the application ID from `com.ben.contactsonly` to
+`com.contactsonly.app`; Java classes keep the original namespace. The new ID is
+a separate Android app, so nothing carries over from the old one and the
+call-screening role moves when the owner approves the new app. Later updates
+preserve the new ID and the release signing certificate. Private keys stay
+outside Git and fleet source snapshots ([RELEASING.md](RELEASING.md)).
 An independently inspected release APK
 must have no requested permissions and no debuggable flag. The manifest exposes
 the launcher activity and a screening service guarded by BIND_SCREENING_SERVICE.

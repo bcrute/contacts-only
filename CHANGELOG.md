@@ -1,6 +1,14 @@
 # Changes
 
-## 1.1.0 — November 4, 2026
+## 1.2.0 — November 5, 2026
+
+- New application ID, `com.contactsonly.app`, shared with the Google Play
+  listing. Android installs it as a separate app: after installing it, approve
+  it as the caller ID and spam app, then uninstall the old Contacts Only.
+- Signed with the release key only.
+- The GitHub 1.1.0 release (old ID) was withdrawn.
+
+## 1.1.0 — November 4, 2026 (withdrawn; application ID `com.ben.contactsonly`)
 
 - Switch call blocking on or off inside the app without uninstalling it.
 - Save the switch setting and apply it to every new call.
